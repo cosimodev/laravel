@@ -3,23 +3,26 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Workshop;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $admin = User::factory()->admin()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@academy.test',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $employee = User::factory()->employee()->create([
+            'name' => 'Employee User',
+            'email' => 'employee@academy.test',
+        ]);
+
+        // Create some sample workshops
+        Workshop::factory()->count(5)->create([
+            'created_by' => $admin->id,
         ]);
     }
 }
