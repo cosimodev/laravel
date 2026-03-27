@@ -5,32 +5,28 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
+/**
+ * Middleware Inertia per condividere dati globali con tutte le pagine Vue.
+ *
+ * Ogni pagina riceve automaticamente l'utente autenticato (con il ruolo)
+ * e i messaggi flash (success/error) dalla sessione, senza doverli
+ * passare manualmente in ogni controller.
+ */
 class HandleInertiaRequests extends Middleware
 {
-    /**
-     * The root template that is loaded on the first page visit.
-     *
-     * @var string
-     */
     protected $rootView = 'app';
 
-    /**
-     * Determine the current asset version.
-     */
     public function version(Request $request): ?string
     {
         return parent::version($request);
     }
 
-    /**
-     * Define the props that are shared by default.
-     *
-     * @return array<string, mixed>
-     */
     public function share(Request $request): array
     {
         return [
             ...parent::share($request),
+
+            // Dati utente con ruolo — usati nel layout per navigazione e badge
             'auth' => [
                 'user' => $request->user() ? [
                     'id' => $request->user()->id,
@@ -39,6 +35,8 @@ class HandleInertiaRequests extends Middleware
                     'role' => $request->user()->role,
                 ] : null,
             ],
+
+            // Flash messages — mostrati nel layout dopo redirect
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

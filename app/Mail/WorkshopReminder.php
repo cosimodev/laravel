@@ -9,6 +9,13 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Email di promemoria inviata il giorno prima del workshop
+ * a tutti i partecipanti con iscrizione confermata.
+ *
+ * Il template markdown si trova in resources/views/emails/workshop-reminder.blade.php
+ * e include titolo, data, durata e descrizione del workshop.
+ */
 class WorkshopReminder extends Mailable
 {
     use Queueable, SerializesModels;

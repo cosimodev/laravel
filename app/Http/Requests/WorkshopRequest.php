@@ -4,11 +4,18 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Validazione per la creazione e modifica di un workshop.
+ *
+ * Usato sia dallo store che dall'update — le regole sono le stesse
+ * perché in entrambi i casi vogliamo tutti i campi obbligatori.
+ * La data deve essere futura per evitare workshop nel passato.
+ */
 class WorkshopRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return true; // L'autorizzazione è gestita dal middleware role:admin
     }
 
     public function rules(): array

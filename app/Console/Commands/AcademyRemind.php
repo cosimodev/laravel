@@ -7,13 +7,23 @@ use App\Models\Workshop;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * Comando per inviare promemoria via email ai partecipanti confermati
+ * dei workshop previsti per il giorno successivo.
+ *
+ * Utilizzo: php artisan academy:remind
+ *
+ * Pensato per essere schedulato con cron (es. ogni giorno alle 18:00)
+ * tramite il kernel di Laravel: $schedule->command('academy:remind')->dailyAt('18:00');
+ */
 class AcademyRemind extends Command
 {
     protected $signature = 'academy:remind';
-    protected $description = 'Send reminder emails for workshops happening tomorrow';
+    protected $description = 'Invia email di promemoria per i workshop di domani';
 
     public function handle(): int
     {
+        // Calcoliamo l'intervallo "domani" (dalle 00:00 alle 23:59)
         $tomorrow = now()->addDay()->startOfDay();
         $dayAfter = $tomorrow->copy()->addDay();
 
@@ -30,10 +40,12 @@ class AcademyRemind extends Command
 
         foreach ($workshops as $workshop) {
             $confirmed = $workshop->confirmedRegistrations;
+
             foreach ($confirmed as $registration) {
                 Mail::to($registration->user->email)->send(new WorkshopReminder($workshop));
                 $totalSent++;
             }
+
             $this->info("Workshop \"{$workshop->title}\": {$confirmed->count()} email inviate.");
         }
 

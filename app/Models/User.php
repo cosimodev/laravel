@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Modello utente con supporto ai ruoli.
+ *
+ * Ogni utente ha un ruolo (admin o employee) che determina quali sezioni
+ * dell'applicazione può vedere. Il ruolo viene castato come enum
+ * per avere type-safety e autocompletamento nell'IDE.
+ */
 #[Fillable(['name', 'email', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
@@ -26,6 +33,10 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Shortcut per verificare se l'utente è un amministratore.
+     * Lo usiamo nel middleware EnsureRole e nel redirect post-login.
+     */
     public function isAdmin(): bool
     {
         return $this->role === UserRole::Admin;
