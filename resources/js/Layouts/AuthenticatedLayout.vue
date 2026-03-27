@@ -2,124 +2,140 @@
 import { ref, computed } from 'vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
-const showingNavigationDropdown = ref(false);
+const showMobile = ref(false);
 const user = computed(() => usePage().props.auth.user);
 const isAdmin = computed(() => user.value?.role === 'admin');
 </script>
 
 <template>
-    <div>
-        <div class="min-h-screen bg-gray-100">
-            <nav class="border-b border-gray-100 bg-white">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex h-16 justify-between">
-                        <div class="flex">
-                            <div class="flex shrink-0 items-center">
-                                <Link :href="isAdmin ? route('admin.dashboard') : route('employee.workshops.index')" class="text-xl font-bold text-indigo-600">
-                                    Academy
+    <div class="min-h-screen bg-slate-50 flex flex-col">
+        <!-- Header -->
+        <nav class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between">
+                    <!-- Logo + Nav -->
+                    <div class="flex items-center gap-8">
+                        <Link :href="isAdmin ? route('admin.dashboard') : route('employee.workshops.index')" class="flex items-center gap-2.5">
+                            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 shadow-sm shadow-violet-500/20">
+                                <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            </div>
+                            <span class="hidden text-base font-bold text-slate-900 sm:block">Academy</span>
+                        </Link>
+
+                        <div class="hidden items-center gap-1 sm:flex">
+                            <template v-if="isAdmin">
+                                <Link :href="route('admin.dashboard')" class="rounded-lg px-3 py-2 text-sm font-medium transition" :class="route().current('admin.dashboard') ? 'bg-violet-50 text-violet-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'">
+                                    Dashboard
                                 </Link>
-                            </div>
+                                <Link :href="route('admin.workshops.index')" class="rounded-lg px-3 py-2 text-sm font-medium transition" :class="route().current('admin.workshops.*') ? 'bg-violet-50 text-violet-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'">
+                                    Workshop
+                                </Link>
+                            </template>
+                            <template v-else>
+                                <Link :href="route('employee.workshops.index')" class="rounded-lg px-3 py-2 text-sm font-medium transition" :class="route().current('employee.workshops.*') ? 'bg-violet-50 text-violet-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'">
+                                    Workshop
+                                </Link>
+                            </template>
+                        </div>
+                    </div>
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <template v-if="isAdmin">
-                                    <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
-                                        Dashboard
-                                    </NavLink>
-                                    <NavLink :href="route('admin.workshops.index')" :active="route().current('admin.workshops.*')">
-                                        Workshop
-                                    </NavLink>
+                    <!-- Right side -->
+                    <div class="hidden sm:flex sm:items-center sm:gap-3">
+                        <span class="rounded-full px-2.5 py-1 text-xs font-semibold" :class="isAdmin ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200' : 'bg-sky-50 text-sky-700 ring-1 ring-sky-200'">
+                            {{ isAdmin ? 'Admin' : 'Employee' }}
+                        </span>
+
+                        <div class="relative">
+                            <Dropdown align="right" width="48">
+                                <template #trigger>
+                                    <button class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
+                                        <div class="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 text-xs font-bold text-white">
+                                            {{ user.name.charAt(0).toUpperCase() }}
+                                        </div>
+                                        {{ user.name }}
+                                        <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
                                 </template>
-                                <template v-else>
-                                    <NavLink :href="route('employee.workshops.index')" :active="route().current('employee.workshops.*')">
-                                        Workshop
-                                    </NavLink>
+                                <template #content>
+                                    <DropdownLink :href="route('profile.edit')">Profilo</DropdownLink>
+                                    <DropdownLink :href="route('logout')" method="post" as="button">Esci</DropdownLink>
                                 </template>
-                            </div>
-                        </div>
-
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
-                            <span class="mr-3 rounded-full px-2 py-1 text-xs font-semibold" :class="isAdmin ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'">
-                                {{ user.role }}
-                            </span>
-                            <div class="relative ms-3">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button type="button" class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none">
-                                                {{ user.name }}
-                                                <svg class="-me-0.5 ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-                                    <template #content>
-                                        <DropdownLink :href="route('profile.edit')">Profilo</DropdownLink>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">Esci</DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <button @click="showingNavigationDropdown = !showingNavigationDropdown" class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none">
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path :class="{ hidden: showingNavigationDropdown, 'inline-flex': !showingNavigationDropdown }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                                    <path :class="{ hidden: !showingNavigationDropdown, 'inline-flex': showingNavigationDropdown }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
+                            </Dropdown>
                         </div>
                     </div>
-                </div>
 
-                <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }" class="sm:hidden">
-                    <div class="space-y-1 pb-3 pt-2">
-                        <template v-if="isAdmin">
-                            <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">Dashboard</ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('admin.workshops.index')" :active="route().current('admin.workshops.*')">Workshop</ResponsiveNavLink>
-                        </template>
-                        <template v-else>
-                            <ResponsiveNavLink :href="route('employee.workshops.index')" :active="route().current('employee.workshops.*')">Workshop</ResponsiveNavLink>
-                        </template>
-                    </div>
-                    <div class="border-t border-gray-200 pb-1 pt-4">
-                        <div class="px-4">
-                            <div class="text-base font-medium text-gray-800">{{ user.name }}</div>
-                            <div class="text-sm font-medium text-gray-500">{{ user.email }}</div>
-                        </div>
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')">Profilo</ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('logout')" method="post" as="button">Esci</ResponsiveNavLink>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
-            <header class="bg-white shadow" v-if="$slots.header">
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
-
-            <!-- Flash Messages -->
-            <div v-if="$page.props.flash?.success" class="mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="rounded-md bg-green-50 p-4">
-                    <p class="text-sm text-green-800">{{ $page.props.flash.success }}</p>
-                </div>
-            </div>
-            <div v-if="$page.props.flash?.error" class="mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="rounded-md bg-red-50 p-4">
-                    <p class="text-sm text-red-800">{{ $page.props.flash.error }}</p>
+                    <!-- Mobile hamburger -->
+                    <button @click="showMobile = !showMobile" class="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 sm:hidden">
+                        <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path v-if="!showMobile" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
             </div>
 
-            <main>
-                <slot />
-            </main>
+            <!-- Mobile menu -->
+            <div v-if="showMobile" class="border-t border-slate-200 bg-white px-4 pb-4 pt-3 sm:hidden">
+                <div class="space-y-1">
+                    <template v-if="isAdmin">
+                        <Link :href="route('admin.dashboard')" class="block rounded-lg px-3 py-2 text-sm font-medium" :class="route().current('admin.dashboard') ? 'bg-violet-50 text-violet-700' : 'text-slate-600'">Dashboard</Link>
+                        <Link :href="route('admin.workshops.index')" class="block rounded-lg px-3 py-2 text-sm font-medium" :class="route().current('admin.workshops.*') ? 'bg-violet-50 text-violet-700' : 'text-slate-600'">Workshop</Link>
+                    </template>
+                    <template v-else>
+                        <Link :href="route('employee.workshops.index')" class="block rounded-lg px-3 py-2 text-sm font-medium" :class="route().current('employee.workshops.*') ? 'bg-violet-50 text-violet-700' : 'text-slate-600'">Workshop</Link>
+                    </template>
+                </div>
+                <div class="mt-3 border-t border-slate-200 pt-3">
+                    <div class="flex items-center gap-3 px-3 py-2">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 text-sm font-bold text-white">{{ user.name.charAt(0).toUpperCase() }}</div>
+                        <div>
+                            <div class="text-sm font-medium text-slate-900">{{ user.name }}</div>
+                            <div class="text-xs text-slate-500">{{ user.email }}</div>
+                        </div>
+                    </div>
+                    <Link :href="route('profile.edit')" class="block rounded-lg px-3 py-2 text-sm text-slate-600">Profilo</Link>
+                    <Link :href="route('logout')" method="post" as="button" class="block w-full rounded-lg px-3 py-2 text-left text-sm text-slate-600">Esci</Link>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page header -->
+        <header v-if="$slots.header" class="border-b border-slate-200 bg-white">
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <slot name="header" />
+            </div>
+        </header>
+
+        <!-- Flash Messages -->
+        <div v-if="$page.props.flash?.success" class="mx-auto mt-6 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+                <svg class="h-5 w-5 shrink-0 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p class="text-sm font-medium text-emerald-800">{{ $page.props.flash.success }}</p>
+            </div>
         </div>
+        <div v-if="$page.props.flash?.error" class="mx-auto mt-6 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+                <svg class="h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p class="text-sm font-medium text-red-800">{{ $page.props.flash.error }}</p>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <main class="flex-1">
+            <slot />
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-slate-200 bg-white">
+            <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
+                <p class="text-sm text-slate-400">Internal Academy &copy; {{ new Date().getFullYear() }}</p>
+                <div class="flex items-center gap-1 text-xs text-slate-400">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                    Sistema operativo
+                </div>
+            </div>
+        </footer>
     </div>
 </template>
