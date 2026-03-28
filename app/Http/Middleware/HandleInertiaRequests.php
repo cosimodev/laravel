@@ -26,6 +26,10 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
 
+            // Branding — configurabili da .env
+            'appName' => config('app.name', 'Internal Academy'),
+            'appLogo' => env('APP_LOGO', '🎓'),
+
             // Dati utente con ruolo — usati nel layout per navigazione e badge
             'auth' => [
                 'user' => $request->user() ? [

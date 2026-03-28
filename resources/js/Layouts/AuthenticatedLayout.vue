@@ -17,11 +17,9 @@ const isAdmin = computed(() => user.value?.role === 'admin');
                 <div class="flex h-16 items-center justify-between">
                     <!-- Logo + Nav -->
                     <div class="flex items-center gap-8">
-                        <Link :href="isAdmin ? route('admin.dashboard') : route('employee.workshops.index')" class="flex items-center gap-2.5">
-                            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 shadow-sm shadow-violet-500/20">
-                                <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                            </div>
-                            <span class="hidden text-base font-bold text-slate-900 sm:block">Academy</span>
+                        <Link :href="isAdmin ? route('admin.dashboard') : route('employee.workshops.index')" class="flex items-center gap-2">
+                            <span class="text-2xl leading-none">{{ $page.props.appLogo }}</span>
+                            <span class="hidden text-base font-black text-slate-900 sm:block">Academy</span>
                         </Link>
 
                         <div class="hidden items-center gap-1 sm:flex">
