@@ -26,15 +26,15 @@ const isAdmin = computed(() => user.value?.role === 'admin');
 
                         <div class="hidden items-center gap-1 sm:flex">
                             <template v-if="isAdmin">
-                                <Link :href="route('admin.dashboard')" class="rounded-lg px-3 py-2 text-sm font-medium transition" :class="route().current('admin.dashboard') ? 'bg-violet-50 text-violet-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'">
+                                <Link :href="route('admin.dashboard')" class="rounded-xl px-3.5 py-2 text-sm font-semibold transition-all duration-200" :class="route().current('admin.dashboard') ? 'bg-gradient-to-r from-violet-50 to-indigo-50 text-violet-700 ring-1 ring-violet-200/60 shadow-sm shadow-violet-500/5' : 'text-slate-600 hover:text-violet-700 hover:bg-violet-50/50'">
                                     Dashboard
                                 </Link>
-                                <Link :href="route('admin.workshops.index')" class="rounded-lg px-3 py-2 text-sm font-medium transition" :class="route().current('admin.workshops.*') ? 'bg-violet-50 text-violet-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'">
+                                <Link :href="route('admin.workshops.index')" class="rounded-xl px-3.5 py-2 text-sm font-semibold transition-all duration-200" :class="route().current('admin.workshops.*') ? 'bg-gradient-to-r from-violet-50 to-indigo-50 text-violet-700 ring-1 ring-violet-200/60 shadow-sm shadow-violet-500/5' : 'text-slate-600 hover:text-violet-700 hover:bg-violet-50/50'">
                                     Workshop
                                 </Link>
                             </template>
                             <template v-else>
-                                <Link :href="route('employee.workshops.index')" class="rounded-lg px-3 py-2 text-sm font-medium transition" :class="route().current('employee.workshops.*') ? 'bg-violet-50 text-violet-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'">
+                                <Link :href="route('employee.workshops.index')" class="rounded-xl px-3.5 py-2 text-sm font-semibold transition-all duration-200" :class="route().current('employee.workshops.*') ? 'bg-gradient-to-r from-violet-50 to-indigo-50 text-violet-700 ring-1 ring-violet-200/60 shadow-sm shadow-violet-500/5' : 'text-slate-600 hover:text-violet-700 hover:bg-violet-50/50'">
                                     Workshop
                                 </Link>
                             </template>
@@ -128,12 +128,15 @@ const isAdmin = computed(() => user.value?.role === 'admin');
         </main>
 
         <!-- Footer -->
-        <footer class="border-t border-slate-200 bg-white">
-            <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
-                <p class="text-sm text-slate-400">Internal Academy &copy; {{ new Date().getFullYear() }}</p>
-                <div class="flex items-center gap-1 text-xs text-slate-400">
-                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-                    Sistema operativo
+        <footer class="border-t border-slate-100 bg-gradient-to-r from-slate-50 to-white">
+            <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
+                <div>
+                    <p class="text-sm font-medium text-slate-700">Internal Academy</p>
+                    <p class="mt-0.5 text-xs text-slate-400">Piattaforma di formazione aziendale</p>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-medium text-slate-500">
+                    <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Sistema online
                 </div>
             </div>
         </footer>

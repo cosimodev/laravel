@@ -20,10 +20,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-    ]);
+    return redirect()->route('login');
 });
 
 // Redirect intelligente post-login: in base al ruolo porta alla sezione giusta

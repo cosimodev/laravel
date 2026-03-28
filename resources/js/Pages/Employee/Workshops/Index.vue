@@ -16,7 +16,7 @@ defineProps({ workshops: Object });
                 </div>
 
                 <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-                    <Link v-for="w in workshops.data" :key="w.id" :href="route('employee.workshops.show', w.id)" class="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:border-violet-200 hover:shadow-md hover:shadow-violet-500/5">
+                    <Link v-for="w in workshops.data" :key="w.id" :href="route('employee.workshops.show', w.id)" class="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-500/10 hover:-translate-y-1">
                         <!-- Top accent bar -->
                         <div class="h-1 w-full bg-gradient-to-r" :class="w.registrations?.length ? (w.registrations[0].status === 'confirmed' ? 'from-emerald-400 to-teal-500' : 'from-amber-400 to-orange-400') : 'from-violet-400 to-indigo-500'"></div>
 
