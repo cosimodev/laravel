@@ -17,7 +17,7 @@ use Illuminate\Notifications\Notifiable;
  * dell'applicazione può vedere. Il ruolo viene castato come enum
  * per avere type-safety e autocompletamento nell'IDE.
  */
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'email', 'password', 'role', 'avatar'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -45,5 +45,11 @@ class User extends Authenticatable
     public function isEmployee(): bool
     {
         return $this->role === UserRole::Employee;
+    }
+
+    /** URL completo dell'avatar, o null se non caricato. */
+    public function avatarUrl(): ?string
+    {
+        return $this->avatar ? asset('storage/' . $this->avatar) : null;
     }
 }

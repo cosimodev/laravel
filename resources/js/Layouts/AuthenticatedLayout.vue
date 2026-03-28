@@ -49,7 +49,8 @@ const isAdmin = computed(() => user.value?.role === 'admin');
                             <Dropdown align="right" width="48">
                                 <template #trigger>
                                     <button class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
-                                        <div class="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 text-xs font-bold text-white">
+                                        <img v-if="user.avatar_url" :src="user.avatar_url" class="h-6 w-6 rounded-full object-cover" alt="" />
+                                        <div v-else class="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 text-xs font-bold text-white">
                                             {{ user.name.charAt(0).toUpperCase() }}
                                         </div>
                                         {{ user.name }}
@@ -87,7 +88,8 @@ const isAdmin = computed(() => user.value?.role === 'admin');
                 </div>
                 <div class="mt-3 border-t border-slate-200 pt-3">
                     <div class="flex items-center gap-3 px-3 py-2">
-                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 text-sm font-bold text-white">{{ user.name.charAt(0).toUpperCase() }}</div>
+                        <img v-if="user.avatar_url" :src="user.avatar_url" class="h-8 w-8 rounded-full object-cover" alt="" />
+                        <div v-else class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 text-sm font-bold text-white">{{ user.name.charAt(0).toUpperCase() }}</div>
                         <div>
                             <div class="text-sm font-medium text-slate-900">{{ user.name }}</div>
                             <div class="text-xs text-slate-500">{{ user.email }}</div>
